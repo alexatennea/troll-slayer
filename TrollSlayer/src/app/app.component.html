@@ -1,0 +1,55 @@
+<div style="text-align:center">
+  <h1>Welcome to {{ title }}!</h1>
+  <p *ngIf="gameData">Game ID: {{ gameData.gameId }}</p>
+  <button mat-flat-button color="primary" *ngIf="!gameData" (click)="startGame()">Start Game</button>
+  <div *ngIf="gameData">
+    <h2>Player</h2>
+    <p><mat-icon>favorite</mat-icon> {{ gameData.player.health }}</p>
+    <p>Weapons:</p>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [value]="selectedWeaponIndex">
+        <mat-button-toggle [value]="i"
+          *ngFor="let weapon of gameData.player.weapons; index as i" 
+          (click)="selectedWeaponIndex = i">
+          {{ weapon.name }} ({{ weapon.diceRoll }})
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    <br />
+    <br />
+    <div *ngIf="!gameData.dragon">
+      <p>Creatures:</p>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" [value]="selectedTargetIndex">
+        <mat-button-toggle [value]="i"
+          *ngFor="let troll of gameData.trolls; index as i" 
+          (click)="selectedTargetType = 'troll'; selectedTargetIndex = i">
+          Troll {{ i + 1 }} 
+          <br /> 
+          <mat-icon>favorite</mat-icon> {{ troll.health }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div>
+    <div *ngIf="gameData.dragon">
+      <p>Dragon!!</p>
+      <mat-button-toggle-group name="fontStyle" aria-label="Font Style" *ngIf="gameData.dragon">
+        <mat-button-toggle 
+          (click)="selectedTargetType = 'dragon'; selectedTargetIndex = 0">
+          Dragon
+          <br /> 
+          <mat-icon>favorite</mat-icon> {{ gameData.dragon.health }}
+        </mat-button-toggle>
+      </mat-button-toggle-group>
+    </div> 
+    <br />
+
+    <div *ngIf="message">
+      <br />
+      <p>{{message}}</p>
+    </div>
+
+    <button mat-flat-button color="primary" (click)="attack()" *ngIf="gameData.player.health > 0 && creaturesAlive > 0">Attack</button>
+    <br />
+    <br /> 
+    <button mat-flat-button color="warn" *ngIf="gameData" (click)="startGame()">Restart Game</button>
+
+  <br />  
+  </div>
+</div>
